@@ -1,0 +1,59 @@
+{
+  "Machine Learning & AI": [
+    {
+      "name": "Dreamix",
+      "description": "Custom AI software development specializing in machine learning, generative AI, and data science solutions for regulated industries such as healthcare and aviation, delivering meaningful business innovations with high client retention and ethical AI standards.",
+      "location": "Sofia, Bulgaria",
+      "status": "Hiring",
+      "salary": "Entry: ~45,000-55,000 EUR | Senior: ~70,000-90,000 EUR",
+      "tech_stack": [
+        "TensorFlow",
+        "Snowflake",
+        "Pandas",
+        "Hugging Face",
+        "PyTorch",
+        "Python",
+        "Keras",
+        "DataBricks",
+        "OpenAI GPT-4.0",
+        "Google Gemini",
+        "Anthropic Claude",
+        "Meta Llama"
+      ],
+      "pivot": "Broadened focus from general bespoke software to a strong AI and generative AI development partner, integrating agentic workflows in highly regulated sectors.",
+      "network": "Competitors include other European AI firms in Eastern Europe; integrations with cloud and AI platforms such as OpenAI, Google, Anthropic."
+    },
+    {
+      "name": "ML6",
+      "description": "AI engineering company bridging cutting-edge AI research and business impact, focusing on AI strategy, generative AI, MLOps, and cloud architecture.",
+      "location": "Ghent, Belgium",
+      "status": "Hiring",
+      "salary": "Entry: ~55,000-65,000 EUR | Senior: ~80,000-110,000 EUR",
+      "tech_stack": [
+        "AWS",
+        "Azure",
+        "Google Cloud",
+        "Generative AI",
+        "Large language models",
+        "Computer vision",
+        "MLOps tools"
+      ],
+      "pivot": "Evolved from pure AI consultancy to launching enterprise superintelligence platform (“Unum”), moving into AI scalability, automation and industry-specific large AI implementations.",
+      "network": "Collaborations with global cloud providers and European enterprises such as Randstad, P&G, ASML; strategic partners include OpenAI."
+    },
+    {
+      "name": "Aleph Alpha",
+      "description": "Development of trusted, explainable European large language models and generative AI systems prioritizing data sovereignty, transparency, and regulatory compliance for enterprises and governments.",
+      "location": "Heidelberg, Germany",
+      "status": "Hiring",
+      "salary": "Entry: ~50,000-60,000 EUR | Senior: ~85,000-110,000 EUR",
+      "tech_stack": [
+        "Proprietary LLMs",
+        "AI explainability",
+        "Compliance-focused AI infrastructure"
+      ],
+      "pivot": "From general AI research towards specialized enterprise-grade AI services tailored for regulated sectors like legal and healthcare, including on-premise and hybrid AI solutions.",
+      "network": "Strategic partnerships with Bosch Ventures, Schwarz Group; competitor to US OpenAI and other LLM providers; aligned with European regulatory frameworks."
+    }
+  ]
+}

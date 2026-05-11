@@ -1,0 +1,15 @@
+PROFIL: Robin Erb
+STUDIUM:
+- M.Sc. Data and Computer Science, Universität Heidelberg (Schwerpunkt Machine Learning, GPA 1.3)
+- Auslandssemester M.Sc. Computer Science, Universität Kopenhagen (Feb 2026 - Juli 2026)
+- B.Sc. Informatik, Universität Konstanz (Schwerpunkt Data Science & HCI, GPA 1.4)
+
+BERUFSERFAHRUNG:
+- Independent Software Developer (Aktuell): Automatisierung Middleware & ERP Integration (Shopify, Google Cloud Functions, Firestore)
+- Independent Software Developer (2025): AI-Driven Sales Automation (OCR-Datenextraktion, KI-Chatbots)
+- Wissenschaftliche Hilfskraft (HCI): Entwicklung "Spatial Mouse" (Hardware in C, Unity, 3D CAD)
+
+TECHNIK & PUBLIKATIONEN:
+- Skills: Python, Java, C++, SQL, R, PyTorch, Scikit-learn, Pandas, Docker, Unity, CAD
+- Publikation: Hubenschmid, S., Erb, R., et al. "SpatialMouse" (VRST '25)
+- Sprachen: Deutsch (Muttersprache), Englisch (Fließend)
