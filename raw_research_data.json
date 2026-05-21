@@ -1,0 +1,287 @@
+[
+  {
+    "name": "Helsing",
+    "description": "Helsing develops AI software for defense applications, focusing on real-time situational awareness, sensor fusion, and autonomous systems for democratic governments. Their technology enables advanced decision support and enhances defense capabilities through deep learning models.",
+    "location": "Munich, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~100,000 EUR",
+    "tech_stack": [
+      "Python",
+      "C++",
+      "Deep Learning",
+      "Edge Computing",
+      "ROS"
+    ],
+    "pivot": "Focus on sovereign democratic defense applications and strategic partnerships with governments and defense primes.",
+    "network": "Partnerships with governments and defense primes; competitors include other defense tech AI companies.",
+    "sources": [
+      "https://www.omnius.so/blog/leading-ai-startups-germany",
+      "https://www.appliedai-institute.de/en/publications/ai-startup-landscape-2024/"
+    ]
+  },
+  {
+    "name": "Aleph Alpha",
+    "description": "Aleph Alpha develops sovereign large language models and enterprise-grade generative AI solutions with a strong emphasis on privacy, security, and regulatory compliance. Their PhariaAI platform is designed for businesses and governments seeking GDPR and EU AI Act alignment.",
+    "location": "Heidelberg, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~58,000 EUR | Senior: ~95,000 EUR",
+    "tech_stack": [
+      "Python",
+      "PyTorch",
+      "Transformers",
+      "LLMs",
+      "GCP"
+    ],
+    "pivot": "Focus on sovereign and privacy-focused AI deployments, offering on-premise and secure cloud options.",
+    "network": "Competitors include other LLM providers; partners with enterprises and governments.",
+    "sources": [
+      "https://www.omnius.so/blog/leading-ai-startups-germany",
+      "https://www.appliedai-institute.de/en/publications/ai-startup-landscape-2024/"
+    ]
+  },
+  {
+    "name": "Black Forest Labs",
+    "description": "Black Forest Labs is an AI research lab specializing in state-of-the-art generative models for image and visual content creation, including their FLUX models. These models are used for text-to-image generation and editing workflows by creators, developers, and enterprise partners.",
+    "location": "Freiburg, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~65,000 EUR | Senior: ~105,000 EUR",
+    "tech_stack": [
+      "Python",
+      "PyTorch",
+      "Generative AI",
+      "Diffusion Models",
+      "Kubernetes"
+    ],
+    "pivot": "Secured significant funding, reaching a $4 billion valuation, and is expanding globally to scale infrastructure and accelerate development of its generative image models.",
+    "network": "Strategic partners include Meta, Adobe, Microsoft, and xAI; competitors include other generative AI companies.",
+    "sources": [
+      "https://observer.com/2025/09/german-ai-startup-black-forest-labs-4b-valuation/",
+      "https://www.linkedin.com/posts/johnathanteh_germany-just-built-a-4b-ai-startup-in-one-activity-7380864392990572544-cEFQ",
+      "https://european.cloud/2025/12/black-forest-labs-most-valuable-ai-company/"
+    ]
+  },
+  {
+    "name": "dida Machine Learning",
+    "description": "dida Machine Learning focuses on developing and implementing machine learning solutions for businesses, aiming to automate processes and extract insights from data. They specialize in custom ML model development and integration into existing workflows.",
+    "location": "Munich, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~55,000 EUR | Senior: ~90,000 EUR",
+    "tech_stack": [
+      "Python",
+      "Scikit-learn",
+      "TensorFlow",
+      "Cloud Platforms",
+      "Data Analysis"
+    ],
+    "pivot": "Focus on practical ML applications for enterprise clients, driving efficiency and data-driven decision-making.",
+    "network": "Works with various enterprise clients; competes with ML consulting firms.",
+    "sources": [
+      "https://www.appliedai-institute.de/en/publications/ai-startup-landscape-2024/"
+    ]
+  },
+  {
+    "name": "Celonis",
+    "description": "Celonis provides process mining software that uses AI and machine learning to analyze and optimize business processes. Their platform identifies inefficiencies and bottlenecks in areas like finance, supply chain, and customer service, enabling data-driven process improvements.",
+    "location": "Munich, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~100,000 EUR",
+    "tech_stack": [
+      "Process Mining",
+      "Machine Learning",
+      "Data Analytics",
+      "SQL",
+      "Cloud"
+    ],
+    "pivot": "Expanding its AI capabilities and market reach in process automation and optimization for large enterprises.",
+    "network": "Competes with other business process management and analytics software providers; partners with major consulting firms.",
+    "sources": [
+      "https://www.appliedai-institute.de/en/publications/ai-startup-landscape-2024/",
+      "https://observer.com/2025/09/german-ai-startup-black-forest-labs-4b-valuation/"
+    ]
+  },
+  {
+    "name": "Mindpeak",
+    "description": "Mindpeak develops AI-powered tissue diagnostics solutions for personalized cancer treatment. Their tools assist cancer experts by automating visual diagnosis using state-of-the-art artificial intelligence and deep learning, aiding in reliable and reproducible diagnoses.",
+    "location": "Hamburg, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~57,000 EUR | Senior: ~95,000 EUR",
+    "tech_stack": [
+      "Deep Learning",
+      "Computer Vision",
+      "Python",
+      "Medical Imaging",
+      "PyTorch"
+    ],
+    "pivot": "Focus on AI tissue diagnostics to address the growing demand for medical image analysis and assist pathology specialists.",
+    "network": "Partners with leading pathology and university labs; competes with other medical AI diagnostic companies.",
+    "sources": [
+      "https://app.biopharmiq.com/company-lists-all/list-of-artificial-intelligence-companies-in-germany"
+    ]
+  },
+  {
+    "name": "Noah Labs",
+    "description": "Noah Labs develops AI-based software solutions for medical care and research, aiming to facilitate diagnosis, manage conditions, and guide intervention. Their focus is on leveraging AI to improve patient outcomes and streamline healthcare processes.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~56,000 EUR | Senior: ~92,000 EUR",
+    "tech_stack": [
+      "AI",
+      "Machine Learning",
+      "Healthcare IT",
+      "Data Science",
+      "Python"
+    ],
+    "pivot": "Developing AI solutions for medical diagnosis, condition management, and intervention guidance.",
+    "network": "Works within the healthcare and medical research sectors.",
+    "sources": [
+      "https://app.biopharmiq.com/company-lists-all/list-of-artificial-intelligence-companies-in-germany"
+    ]
+  },
+  {
+    "name": "HyperAI",
+    "description": "HyperAI is building the future of AI-driven cloud computing, focusing on making high-performance AI computing accessible, particularly for European markets. Their ecosystem includes HyperCLOUD with Nvidia GPUs, HyperSDK for AI development, and HyperPOD for hardware.",
+    "location": "Amsterdam, Netherlands",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~100,000 EUR",
+    "tech_stack": [
+      "Cloud Computing",
+      "AI Infrastructure",
+      "Nvidia GPUs",
+      "TensorFlow",
+      "PyTorch",
+      "Kubernetes"
+    ],
+    "pivot": "Democratizing AI computing by providing accessible, high-performance cloud infrastructure and development tools.",
+    "network": "Focuses on European markets; partners with hardware providers like Nvidia.",
+    "sources": [
+      "https://wearebrain.com/blog/ai-in-amsterdam-6-startups-and-ai-studios-to-watch/"
+    ]
+  },
+  {
+    "name": "Aidence",
+    "description": "Aidence (now part of DeepHealth) develops AI solutions for medical imaging, specifically focusing on radiology for the lung cancer pathway. Their Veye Lung Nodules product aids in automated lung nodule detection and quantification on chest CTs.",
+    "location": "Amsterdam, Netherlands",
+    "status": "Stable",
+    "salary": "Entry: ~58,000 EUR | Senior: ~98,000 EUR",
+    "tech_stack": [
+      "AI",
+      "Medical Imaging",
+      "Deep Learning",
+      "Computer Vision",
+      "Python"
+    ],
+    "pivot": "Focus on AI for early and accurate detection in medical imaging, integrated into existing radiology workflows.",
+    "network": "Part of DeepHealth; collaborates with healthcare providers and research institutions.",
+    "sources": [
+      "https://wearebrain.com/blog/ai-in-amsterdam-6-startups-and-ai-studios-to-watch/"
+    ]
+  },
+  {
+    "name": "Weaviate",
+    "description": "Weaviate is an open-source vector database that enables the creation of AI-powered applications by storing data objects and their vector embeddings. It supports semantic search, question answering, and recommendation systems, leveraging deep learning models.",
+    "location": "Amsterdam, Netherlands",
+    "status": "Hiring",
+    "salary": "Entry: ~62,000 EUR | Senior: ~105,000 EUR",
+    "tech_stack": [
+      "Vector Database",
+      "Open Source",
+      "Go",
+      "Python",
+      "Machine Learning",
+      "Kubernetes"
+    ],
+    "pivot": "Focus on providing a scalable and efficient open-source vector database for AI-native applications.",
+    "network": "Competes with other vector database providers; part of the broader AI and data infrastructure ecosystem.",
+    "sources": [
+      "https://www.linkedin.com/posts/thetechnewsportal_top-10-ai-startups-in-amsterdam-activity-7407728985599565824-ilmp"
+    ]
+  },
+  {
+    "name": "Fresh Energy",
+    "description": "This company utilizes machine learning methods to analyze consumption data from smart meters, focusing on optimizing energy usage for consumers. Their core technology involves processing time-series data to identify patterns and anomalies for energy efficiency.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~55,000 EUR | Senior: ~85,000 EUR",
+    "tech_stack": [
+      "Machine Learning",
+      "Data Analysis",
+      "Time-Series Data"
+    ],
+    "pivot": "Emerging from an innovation hub, Fresh Energy is focused on leveraging AI for energy consumption optimization.",
+    "network": "Innogy (former investor), energy sector companies.",
+    "sources": [
+      "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
+    ]
+  },
+  {
+    "name": "aifora",
+    "description": "aifora provides an AI-driven platform for retailers to automatically optimize pricing strategies, aiming to increase sales and profits. Their system likely employs predictive analytics and reinforcement learning to dynamically adjust prices based on market conditions and inventory.",
+    "location": "Düsseldorf, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~55,000 EUR | Senior: ~85,000 EUR",
+    "tech_stack": [
+      "AI",
+      "Machine Learning",
+      "Predictive Analytics",
+      "Reinforcement Learning"
+    ],
+    "pivot": "Focuses on automated price optimization for retail, leveraging AI to enhance sales and profit margins.",
+    "network": "Retail sector, VC firm Capnamic.",
+    "sources": [
+      "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
+    ]
+  },
+  {
+    "name": "e-bot7",
+    "description": "e-bot7 develops chatbot software for customer service systems, designed to significantly reduce average processing times by leveraging natural language processing (NLP) and machine learning. Their solution aims to automate customer interactions and provide efficient support.",
+    "location": "Munich, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~58,000 EUR | Senior: ~88,000 EUR",
+    "tech_stack": [
+      "Chatbot Software",
+      "Natural Language Processing (NLP)",
+      "Machine Learning"
+    ],
+    "pivot": "Specializes in AI-powered customer service chatbots to improve efficiency and reduce response times.",
+    "network": "Customer service platforms, VC firm 42CAP.",
+    "sources": [
+      "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
+    ]
+  },
+  {
+    "name": "Scailyte",
+    "description": "Scailyte employs deep learning methods to analyze individual human cells, providing insights into diseases. Their technology aims to accelerate disease diagnostics by processing complex biological data, potentially using image recognition and pattern analysis on cellular structures.",
+    "location": "Sursee, Switzerland",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~90,000 EUR",
+    "tech_stack": [
+      "Deep Learning",
+      "Cellular Analysis",
+      "Biotechnology AI",
+      "Pattern Recognition"
+    ],
+    "pivot": "Leverages deep learning for rapid disease diagnostics through advanced cellular analysis.",
+    "network": "Biotech and healthcare research institutions.",
+    "sources": [
+      "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
+    ]
+  },
+  {
+    "name": "realxdata",
+    "description": "realxdata is building a real estate platform powered by big data analytics and machine learning to enhance asset valuations and portfolio optimization. Their system likely processes vast amounts of real estate data to provide predictive insights and improve investment strategies.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~56,000 EUR | Senior: ~86,000 EUR",
+    "tech_stack": [
+      "Big Data",
+      "Machine Learning",
+      "Real Estate Analytics",
+      "Predictive Modeling"
+    ],
+    "pivot": "Utilizes big data and AI to revolutionize real estate asset valuation and portfolio management.",
+    "network": "Real estate industry, data analytics providers.",
+    "sources": [
+      "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
+    ]
+  }
+]
