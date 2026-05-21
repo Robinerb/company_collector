@@ -562,7 +562,10 @@ if st.session_state["selected_profile"] is None:
                                 json.dump(meta, f, indent=2, ensure_ascii=False)
                                 
                             with st.spinner(f"🚀 Scouting 5 startups tailored for {meta['direction']}..."):
-                                discover_5_targeted_companies(cv_text, meta["direction"], is_tech=meta.get("is_tech", True))
+                                try:
+                                    discover_5_targeted_companies(cv_text, meta["direction"], is_tech=meta.get("is_tech", True))
+                                except TypeError:
+                                    discover_5_targeted_companies(cv_text, meta["direction"])
                                 
                             with st.spinner("📊 Mapping compatibility score index (Gemini Flash)..."):
                                 from analysis_engine import run_analysis

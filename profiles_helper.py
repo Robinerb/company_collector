@@ -68,6 +68,14 @@ def extract_profile_metadata(cv_text):
             result_text = result_text.strip()
             
             meta = json.loads(result_text)
+            if isinstance(meta, list):
+                if len(meta) > 0:
+                    meta = meta[0]
+                else:
+                    meta = {}
+            if not isinstance(meta, dict):
+                meta = {}
+                
             if not meta.get("name") or meta.get("name") == "Full Name":
                 meta["name"] = "Candidate Profile"
             if not meta.get("direction"):
