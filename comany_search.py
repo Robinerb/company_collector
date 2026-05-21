@@ -21,10 +21,28 @@ def main():
     print("🧠 RUNNING LLM ANALYSIS ENGINE (COMPATIBILITY & ROADMAPS) 🧠")
     print("=" * 60)
     
-    # 2. Run LLM Analysis Engine
+    # 2. Run LLM Analysis Engine for all candidate profiles
     try:
         from analysis_engine import run_analysis
-        run_analysis()
+        import glob
+        import os
+        import time
+        
+        # Scan for all txt profile files
+        profiles = glob.glob("profiles/*.txt")
+        if not profiles and os.path.exists("my_profil.txt"):
+            profiles = ["my_profil.txt"]
+            
+        if profiles:
+            print(f"Discovered {len(profiles)} candidate profiles to score: {profiles}")
+            for idx, profile_path in enumerate(profiles):
+                if idx > 0:
+                    print("Sleeping 4 seconds to avoid Gemini API rate limits...")
+                    time.sleep(4)
+                print(f"[{idx+1}/{len(profiles)}] Running match analysis for profile: {profile_path}")
+                run_analysis(profile_path)
+        else:
+            print("⚠️ No candidate profiles found to score. Skipping analysis engine.")
     except Exception as e:
         print(f"❌ Error during analysis phase: {e}")
         sys.exit(1)

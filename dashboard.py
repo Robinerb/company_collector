@@ -22,10 +22,35 @@ client = OpenAI(
 )
 
 st.set_page_config(
-    page_title="DACH-NL AI & Deep Tech Landscape",
+    page_title="Company Collector - Deep Tech Matcher",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# --- SECURE PORTAL PASSWORD GATE ---
+password_env = os.getenv("APP_PASSWORD")
+if password_env:
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
+        
+    if not st.session_state["authenticated"]:
+        col_log1, col_log2, col_log3 = st.columns([1, 2, 1])
+        with col_log2:
+            st.markdown("<div style='height: 100px;'></div>", unsafe_allow_html=True)
+            st.markdown("<h1 style='text-align: center; color: white;'>💼 Company Collector</h1>", unsafe_allow_html=True)
+            st.markdown("<h3 style='text-align: center; color: #b2bec3;'>🔒 Secure Portal</h3>", unsafe_allow_html=True)
+            
+            with st.form("login_form"):
+                password_input = st.text_input("Enter Access Password:", type="password")
+                submitted = st.form_submit_button("Unlock Dashboard", use_container_width=True)
+                if submitted:
+                    if password_input == password_env:
+                        st.session_state["authenticated"] = True
+                        st.success("Access Granted! Loading dashboard...")
+                        st.rerun()
+                    else:
+                        st.error("Incorrect password. Please try again.")
+        st.stop()
 
 # Custom Premium CSS for Rich Aesthetics & Infographic Progress-Bar Table
 st.markdown("""
@@ -297,6 +322,25 @@ with st.sidebar:
         active_name = st.selectbox("Select Active Candidate:", list(available_profiles.keys()))
         active_path = available_profiles[active_name]
         
+        # Deletable profiles (except Robin Erb)
+        profile_id_tmp = os.path.splitext(os.path.basename(active_path))[0]
+        if profile_id_tmp != "my_profil" and profile_id_tmp != "robin_erb":
+            st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
+            if st.button("🗑️ Delete This Candidate", use_container_width=True):
+                try:
+                    if os.path.exists(active_path):
+                        os.remove(active_path)
+                    cache_file = f"profiles/dashboard_data_{profile_id_tmp}.json"
+                    if os.path.exists(cache_file):
+                        os.remove(cache_file)
+                    report_file = f"profiles/marktanalyse_db_{profile_id_tmp}.md"
+                    if os.path.exists(report_file):
+                        os.remove(report_file)
+                    st.success(f"Candidate profile '{active_name}' deleted!")
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Error deleting profile: {e}")
+        
     st.markdown("---")
     st.header("📤 Upload Candidate Resume")
     uploaded_file = st.file_uploader("Upload CV (.txt, .pdf)", type=["txt", "pdf"])
@@ -380,10 +424,13 @@ all_techs = sorted(list(set([tech for c in flat_companies for tech in c.get("tec
 all_countries = sorted(list(set([c.get("location", "").split(",")[-1].strip() for c in flat_companies if "," in c.get("location")])))
 
 # --- Header Section with FLOATING AI Career Advisor Dialog ---
-col_head_title, col_head_chat = st.columns([3, 1])
+col_head_title, col_head_search, col_head_chat = st.columns([3, 3, 2])
 with col_head_title:
-    st.title("🗄️ DACH-NL AI & Deep Tech Landscape")
-    st.markdown(f"Evaluating the European AI Market for: **{active_name}**")
+    st.markdown("<h1 style='margin:0; padding:0; font-size:2.2rem; color:white;'>💼 Company Collector</h1>", unsafe_allow_html=True)
+    st.markdown(f"Evaluating European Tech for: **{active_name}**")
+with col_head_search:
+    st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
+    search_query = st.text_input("🔍 Search Stack / Keyword:", "", placeholder="Search Tech, City, or keyword (e.g. PyTorch, C++)...", label_visibility="collapsed")
 with col_head_chat:
     st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
     # A beautiful top-right floating collapsible chat popover button
@@ -429,10 +476,9 @@ with col_head_chat:
                         st.error(f"Chatbot service down: {e}")
 
 # Interactive Filter Bar
-col_filt1, col_filt2, col_filt3 = st.columns([2, 1, 1])
-search_query = col_filt1.text_input("🔍 Search Company, Description, or Technology Stack:", "")
-selected_techs = col_filt2.multiselect("🛠️ Filter by Technology:", all_techs)
-selected_countries = col_filt3.multiselect("📍 Filter by Country/Region:", all_countries)
+col_filt1, col_filt2 = st.columns([1, 1])
+selected_techs = col_filt1.multiselect("🛠️ Filter by Technology:", all_techs)
+selected_countries = col_filt2.multiselect("📍 Filter by Country/Region:", all_countries)
 
 # Apply Filter logic
 filtered_companies = []
@@ -738,8 +784,14 @@ with tab_analytics:
                 
         # Build comparison grid against top demanded technologies
         skills_comparison = []
+        missing_skills = []
         for tech, count in sorted_techs:
-            has_skill = "✅ Match" if tech.lower() in [c_s.lower() for c_s in candidate_skills] else "❌ Learn / Prep Needed"
+            if tech.lower() in [c_s.lower() for c_s in candidate_skills]:
+                has_skill = "✅ Match"
+            else:
+                has_skill = "❌ Gap (Learn Needed)"
+                missing_skills.append(tech)
+                
             skills_comparison.append({
                 "Technology Requirement": tech,
                 "Ecosystem Demand (Firms)": count,
@@ -756,6 +808,23 @@ with tab_analytics:
             skills_pct = int((matching_reqs / total_reqs) * 100) if total_reqs > 0 else 0
             
             st.markdown(f"✨ **Candidate Technology Alignment Rating**: `{skills_pct}%` compatibility with top aggregate demands.")
+            
+            # Feature: Automated Tech Stack Gap Study Paths
+            if missing_skills:
+                st.markdown("##### 📖 Study Gaps & Open Learning Paths:")
+                gap_html = ""
+                for ms in missing_skills:
+                    encoded_ms = urllib.parse.quote(ms)
+                    google_link = f"https://www.google.com/search?q=learn+{encoded_ms}+for+machine+learning"
+                    youtube_link = f"https://www.youtube.com/results?search_query={encoded_ms}+tutorial+for+beginners"
+                    gap_html += f"""
+                    <div style='display:inline-block; background:rgba(231, 76, 60, 0.12); border:1px solid rgba(231, 76, 60, 0.3); border-radius:6px; padding:6px 12px; margin:4px;'>
+                        <strong style='color:#ff7675;'>{ms}</strong>: 
+                        <a href='{google_link}' target='_blank' style='color:#00c6ff; text-decoration:none; margin-right:8px; font-weight:500;'>🔍 Search Google</a> | 
+                        <a href='{youtube_link}' target='_blank' style='color:#f1c40f; text-decoration:none; font-weight:500;'>📺 YouTube path</a>
+                    </div>
+                    """
+                st.markdown(gap_html, unsafe_allow_html=True)
         else:
             st.info("No skill comparison calculated.")
 
@@ -805,3 +874,55 @@ with tab_analytics:
             st.dataframe(net_df, hide_index=True, use_container_width=True)
         else:
             st.info("No network dynamics detected.")
+            
+    # --- Interactive Salary Fit Estimator Section ---
+    st.markdown("---")
+    st.markdown("### 🎯 Interactive Salary Benchmark Fit Estimator")
+    st.markdown("Select your target years of experience to see how your career expectations align with actual verified entry and senior salary levels across our DACH-NL AI company landscape.")
+    
+    col_est1, col_est2 = st.columns(2)
+    
+    with col_est1:
+        target_exp = st.slider("Select Targeted Machine Learning Experience (Years):", 0, 8, 2, key="exp_slider")
+        if target_exp >= 4:
+            level = "Senior"
+        else:
+            level = "Entry"
+            
+        # Compute average benchmarks from flat_companies
+        entry_sals = []
+        senior_sals = []
+        for c in flat_companies:
+            e_val, s_val = parse_salary(c.get("salary", ""))
+            entry_sals.append(e_val)
+            senior_sals.append(s_val)
+            
+        avg_entry = sum(entry_sals) / len(entry_sals) if entry_sals else 60000
+        avg_senior = sum(senior_sals) / len(senior_sals) if senior_sals else 95000
+        
+        # Calculate estimated value
+        if level == "Entry":
+            target_est = int(avg_entry + (target_exp * 4000))
+        else:
+            target_est = int(avg_senior + ((target_exp - 4) * 6000))
+            
+        st.markdown(f"💡 Estimated Fair Compensation Benchmark: <strong style='font-size:1.2rem; color:#00c6ff;'>~{target_est:,} EUR / Year</strong> for a **{level}-Level** position.", unsafe_allow_html=True)
+        st.caption("ℹ️ Estimates are calculated by dynamically blending the real aggregate entry and senior salary ranges gathered from Glassdoor/Kununu during the scraping cycle.")
+        
+    with col_est2:
+        # Match startups that are close to or above this estimate
+        matching_startups = []
+        for c in flat_companies:
+            e_val, s_val = parse_salary(c.get("salary", ""))
+            max_comp = s_val if level == "Senior" else e_val
+            if max_comp >= target_est:
+                matching_startups.append(c.get("name"))
+                
+        if matching_startups:
+            st.markdown(f"🏆 **{len(matching_startups)} Startups** in your database offer compensation at or above this benchmark:")
+            startup_badges_html = ""
+            for name in matching_startups:
+                startup_badges_html += f"<span style='display:inline-block; background:rgba(0, 180, 219, 0.15); border:1px solid #00c6ff; color:#00c6ff; border-radius:6px; padding:3px 10px; margin:4px; font-weight:500;'>{name}</span>"
+            st.markdown(startup_badges_html, unsafe_allow_html=True)
+        else:
+            st.warning("⚠️ No startups in the current database match or exceed this estimated benchmark for your selected experience. Try lowering the experience level or running another scraping cycle!")
