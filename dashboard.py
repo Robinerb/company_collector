@@ -15,7 +15,7 @@ if not os.path.exists('profiles/my_profil.txt') and os.path.exists('my_profil.tx
     shutil.copy('my_profil.txt', 'profiles/my_profil.txt')
 
 # Load env variables and init OpenAI-compatible Gemini client for Advisor Chat
-load_dotenv("/Users/robin/Lokal/Programmieren/company_collector/.env")
+load_dotenv()
 client = OpenAI(
     api_key=os.getenv("GOOGLE_API_KEY"),
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/"

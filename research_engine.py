@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from langchain_community.tools.tavily_search import TavilySearchResults
 
 # Load environment variables
-load_dotenv("/Users/robin/Lokal/Programmieren/company_collector/.env")
+load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def run_research():

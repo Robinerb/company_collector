@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv("/Users/robin/Lokal/Programmieren/company_collector/.env")
+load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def load_raw_research():

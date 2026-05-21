@@ -1,2 +1,23 @@
 API_keys.txt
 .env
+
+# Personal profiles and resumes (for privacy)
+my_profil.txt
+profiles/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# OS-specific files
+.DS_Store
+
+# IDE and environment settings
+.vscode/
+.idea/
+venv/
+env/
+.venv/
