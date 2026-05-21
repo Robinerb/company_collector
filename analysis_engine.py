@@ -67,15 +67,49 @@ def run_analysis(profile_path='my_profil.txt'):
     if len(delta_companies) > 0:
         print(f"🔄 Calculating matches for {len(delta_companies)} NEW companies...")
         
+        # Load candidate metadata to check if they are in CS/AI or non-CS
+        meta_path = f"profiles/{profile_id}_meta.json"
+        is_tech = True
+        if os.path.exists(meta_path):
+            try:
+                with open(meta_path, "r", encoding="utf-8") as f:
+                    meta = json.load(f)
+                    is_tech = meta.get("is_tech", True)
+            except Exception as e:
+                print(f"⚠️ Error loading profile metadata: {e}")
+
         model = "gemini-flash-latest"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
         
-        system_instruction = (
-            "You are an expert senior career advisor, technical recruiter, and executive matchmaker in Deep Tech and Machine Learning. "
-            "Your task is to perform an exceptionally deep, objective compatibility analysis between a candidate profile and a list of companies. "
-            "Output a single, valid JSON object only. Do not wrap the JSON output in markdown backticks (e.g. ```json)."
-        )
+        if is_tech:
+            system_instruction = (
+                "You are an expert senior career advisor, technical recruiter, and executive matchmaker in Deep Tech and Machine Learning. "
+                "Your task is to perform an exceptionally deep, objective compatibility analysis between a candidate profile and a list of companies. "
+                "Output a single, valid JSON object only. Do not wrap the JSON output in markdown backticks (e.g. ```json)."
+            )
+            cluster_instruction = (
+                'Assign to exactly one of these domains based on their focus:\n'
+                '           - "Machine Learning & AI Consultancy"\n'
+                '           - "Computer Vision & Robotics"\n'
+                '           - "NLP & Generative AI"\n'
+                '           - "Embedded ML & IoT"\n'
+                '           - "Data Science & FinTech"\n'
+                '           - "High-Tech Manufacturing AI"'
+            )
+        else:
+            system_instruction = (
+                "You are an expert senior career advisor, business recruiter, and executive matchmaker. "
+                "Your task is to perform an exceptionally deep, objective compatibility analysis between a candidate profile and a list of companies "
+                "relevant to their non-computer-science background (e.g. Sales, Marketing, Biology, Finance, HR, etc.). "
+                "Output a single, valid JSON object only. Do not wrap the JSON output in markdown backticks (e.g. ```json)."
+            )
+            cluster_instruction = (
+                'Assign to exactly one domain that perfectly categorizes the company\'s business focus '
+                'for this candidate. Use business-relevant domain clusters (e.g., "BioTech & Life Sciences", '
+                '"FinTech & Wealth Management", "SaaS & Enterprise Software", "E-commerce & Retail Tech", '
+                '"HR-Tech & RecTech", "MarTech & Digital Media", "Logistics & Supply Chain", etc.).'
+            )
         
         prompt = f"""
         Below is the candidate profile:
@@ -90,15 +124,9 @@ def run_analysis(profile_path='my_profil.txt'):
         
         For EACH company in the list, calculate and provide:
         1. **compatibility_score (0-100)**: Quantitative compatibility percentage. Weight match against CV's specific tech stacks, tools, and background.
-        2. **strategic_cluster**: Assign to exactly one of these domains based on their focus:
-           - "Machine Learning & AI Consultancy"
-           - "Computer Vision & Robotics"
-           - "NLP & Generative AI"
-           - "Embedded ML & IoT"
-           - "Data Science & FinTech"
-           - "High-Tech Manufacturing AI"
-        3. **fit_reasoning**: A highly personalized, crisp 2-3 sentence explanation (in English) linking the candidate's specific technical skills directly to the company's real-world product domain.
-        4. **roadmap_9m**: Exactly 4-5 highly specific, actionable prep steps (in English) for the candidate to prepare for this specific company. Avoid generic suggestions like \"learn Python\".
+        2. **strategic_cluster**: {cluster_instruction}
+        3. **fit_reasoning**: A highly personalized, crisp 2-3 sentence explanation (in English) linking the candidate's specific skills directly to the company's real-world product domain.
+        4. **roadmap_9m**: Exactly 4-5 highly specific, actionable prep steps (in English) for the candidate to prepare for this specific company. For non-tech profiles, focus on relevant business/tooling steps.
         
         Return a valid JSON object with the following format:
         {{

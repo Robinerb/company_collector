@@ -402,7 +402,8 @@ for p_path in profile_paths:
         if p_id == "robin_erb":
             meta = {
                 "name": "Robin Erb",
-                "direction": "Machine Learning & Robotics Specialist"
+                "direction": "Machine Learning & Robotics Specialist",
+                "is_tech": True
             }
         else:
             try:
@@ -561,7 +562,7 @@ if st.session_state["selected_profile"] is None:
                                 json.dump(meta, f, indent=2, ensure_ascii=False)
                                 
                             with st.spinner(f"🚀 Scouting 5 startups tailored for {meta['direction']}..."):
-                                discover_5_targeted_companies(cv_text, meta["direction"])
+                                discover_5_targeted_companies(cv_text, meta["direction"], is_tech=meta.get("is_tech", True))
                                 
                             with st.spinner("📊 Mapping compatibility score index (Gemini Flash)..."):
                                 from analysis_engine import run_analysis
@@ -807,7 +808,7 @@ with tab_overview:
             initial = comp.get("name", "?")[0]
             
             logo_html = f"""
-            <img src="https://logo.clearbit.com/{domain}" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\\'company-logo-fallback\\'>{initial}</div>';" class="company-logo-img" />
+            <img src="https://logo.clearbit.com/{domain}" onerror="this.onerror=null; this.src='https://www.google.com/s2/favicons?sz=64&domain={domain}';" class="company-logo-img" />
             """
             
             # Raw string row build (Zero internal markdown tabs to prevent code block parsing)

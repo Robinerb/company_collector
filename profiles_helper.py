@@ -9,12 +9,13 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 def extract_profile_metadata(cv_text):
     """
-    Extracts the full name and a concise career direction (2-4 words) from candidate CV text.
+    Extracts the full name, a concise career direction (2-4 words), and whether the candidate
+    is in a computer science/tech engineering field from candidate CV text.
     """
     if not api_key:
-        return {"name": "Unknown Candidate", "direction": "Deep Tech Specialist"}
+        return {"name": "Unknown Candidate", "direction": "Deep Tech Specialist", "is_tech": True}
 
-    print("🔮 Querying Gemini to extract candidate name and career direction...")
+    print("🔮 Querying Gemini to extract candidate name, career direction, and domain type...")
     model = "gemini-flash-latest"
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
@@ -22,7 +23,8 @@ def extract_profile_metadata(cv_text):
     system_instruction = (
         "You are an elite talent scout. Your task is to analyze candidate resumes "
         "and extract: 1) Their full name, 2) A highly accurate, concise, premium 2-4 word professional title/direction "
-        "(e.g., 'NLP & Generative AI Specialist', 'Computer Vision & Robotics Engineer', 'Deep Tech Developer'). "
+        "(e.g., 'NLP & Generative AI Specialist', 'B2B Sales Representative', 'Biochemistry Research Assistant'), "
+        "3) A boolean 'is_tech' indicating if their core field is Computer Science, Data Science, AI, or Deep Tech Engineering. "
         "Return a valid JSON object ONLY. Do not use markdown code block formatting."
     )
     
@@ -35,7 +37,8 @@ def extract_profile_metadata(cv_text):
     Return a valid JSON object in exactly this format:
     {{
       "name": "Full Name",
-      "direction": "Concise 2-4 word professional direction"
+      "direction": "Concise 2-4 word professional direction",
+      "is_tech": true or false
     }}
     """
     
@@ -69,22 +72,25 @@ def extract_profile_metadata(cv_text):
                 meta["name"] = "Candidate Profile"
             if not meta.get("direction"):
                 meta["direction"] = "Deep Tech Specialist"
+            if "is_tech" not in meta:
+                meta["is_tech"] = True
             return meta
     except Exception as e:
         print(f"⚠️ Error extracting metadata: {e}")
         
-    return {"name": "Candidate Profile", "direction": "Deep Tech Specialist"}
+    return {"name": "Candidate Profile", "direction": "Deep Tech Specialist", "is_tech": True}
 
-def discover_5_targeted_companies(cv_text, direction):
+def discover_5_targeted_companies(cv_text, direction, is_tech=True):
     """
-    Finds 5 real tech startups in the DACH-NL region specific to the candidate's CV and direction.
+    Finds 5 real startups in the DACH-NL region specific to the candidate's CV and direction.
+    If is_tech is True, discovers tech/AI companies. If False, discovers companies tailored to their non-CS focus.
     Appends them to raw_research_data.json if they don't already exist.
     """
     if not api_key:
         print("⚠️ GOOGLE_API_KEY is not configured.")
         return []
 
-    print(f"🔍 Starting targeted company discovery for career direction: '{direction}'...")
+    print(f"🔍 Starting targeted company discovery for career direction: '{direction}' (is_tech={is_tech})...")
     
     # 1. Load existing company names to avoid duplicates
     existing_companies = []
@@ -104,7 +110,10 @@ def discover_5_targeted_companies(cv_text, direction):
     try:
         from langchain_community.tools.tavily_search import TavilySearchResults
         search = TavilySearchResults(k=6)
-        query = f"Top Machine Learning deep tech AI startups in Germany DACH Netherlands working on {direction}"
+        if is_tech:
+            query = f"Top Machine Learning deep tech AI startups in Germany DACH Netherlands working on {direction}"
+        else:
+            query = f"Top active fast growing startups in Germany DACH Netherlands hiring for {direction}"
         print(f"Running Tavily Search for: '{query}'...")
         search_results = search.run(query)
     except Exception as e:
@@ -116,21 +125,42 @@ def discover_5_targeted_companies(cv_text, direction):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
     headers = {"Content-Type": "application/json"}
     
-    system_instruction = (
-        "You are an elite deep tech research scout. Your task is to discover exactly 5 real, active technology startups "
-        "or companies in the DACH-NL region (Germany, Austria, Switzerland, Netherlands) that specialize in "
-        "a specific career direction and perfectly match a candidate's background. "
-        "Ensure the startups proposed are real, with detailed tech stacks and realistic DACH-NL salary levels "
-        "(e.g., Entry: ~60,000 EUR | Senior: ~95,000 EUR). "
-        "Avoid any companies already present in our database. "
-        "Return a valid JSON array ONLY. Do not use markdown code block formatting."
-    )
-    
+    if is_tech:
+        system_instruction = (
+            "You are an elite deep tech research scout. Your task is to discover exactly 5 real, active technology startups "
+            "or companies in the DACH-NL region (Germany, Austria, Switzerland, Netherlands) that specialize in "
+            "a specific career direction and perfectly match a candidate's background. "
+            "Ensure the startups proposed are real, with detailed tech stacks and realistic DACH-NL salary levels "
+            "(e.g., Entry: ~60,000 EUR | Senior: ~95,000 EUR). "
+            "Avoid any companies already present in our database. "
+            "Return a valid JSON array ONLY. Do not use markdown code block formatting."
+        )
+        
+        prompt_intro = f"Discover exactly 5 real, active Deep Tech / AI companies or startups in DACH-NL suited for this career focus:\nCAREER FOCUS: {direction}"
+        prompt_fallback = "If the Tavily search results do not provide enough matching companies, use your own internal pre-trained knowledge base to discover 5 real, high-quality deep tech / AI startups in DACH-NL working on or near this field."
+        tech_stack_desc = '["Tech1", "Tech2", "Tech3"]'
+        desc_spec = "Concrete technical product details (2-3 sentences in English)."
+    else:
+        system_instruction = (
+            "You are an elite talent acquisition scout. Your task is to discover exactly 5 real, active startups "
+            "or companies in the DACH-NL region (Germany, Austria, Switzerland, Netherlands) where the candidate's "
+            "specific professional pedigree and career focus (e.g. Sales, Marketing, Biology, HR, Finance, etc.) is highly relevant and valuable. "
+            "Target fast-growing startups (SaaS, FinTech, BioTech, HealthTech, E-commerce, HR-Tech, etc.) hiring for this profile. "
+            "Ensure the startups proposed are real, with detailed stacks of business/technical tools used (e.g. Salesforce, Excel, CRM systems) "
+            "and realistic DACH-NL salary levels (e.g., Entry: ~50,000 EUR | Senior: ~85,000 EUR depending on the role). "
+            "Avoid any companies already present in our database. "
+            "Return a valid JSON array ONLY. Do not use markdown code block formatting."
+        )
+        
+        prompt_intro = f"Discover exactly 5 real, active startups or companies in DACH-NL (SaaS, FinTech, BioTech, HR-Tech, etc.) suited for this career focus:\nCAREER FOCUS: {direction}"
+        prompt_fallback = "If the Tavily search results do not provide enough matching companies, use your own internal pre-trained knowledge base to discover 5 real, high-quality startups in DACH-NL where this candidate's specific background and skillset are highly sought after. DO NOT recommend AI/deep tech companies for a non-tech profile unless they are hiring for their specific non-CS role."
+        tech_stack_desc = '["Tool1", "Tool2", "Tool3"] (e.g., Salesforce, HubSpot, Excel, SPSS, or specific professional tools)'
+        desc_spec = "Concrete details of the product/service and how the candidate's specific skillset fits in (2-3 sentences in English)."
+
     avoid_list_str = ", ".join([f'"{name}"' for name in existing_names])
     
     prompt = f"""
-    Discover exactly 5 real, active Deep Tech / AI companies or startups in DACH-NL suited for this career focus:
-    CAREER FOCUS: {direction}
+    {prompt_intro}
     
     CANDIDATE CV DETAILS:
     {cv_text[:4000]}
@@ -140,17 +170,18 @@ def discover_5_targeted_companies(cv_text, direction):
     
     CRITICAL CONSTRAINT:
     Do NOT recommend or include any of the following companies, as they are ALREADY in our database: [{avoid_list_str}].
-    If the Tavily search results do not provide enough matching companies, use your own internal pre-trained knowledge base to discover 5 real, high-quality deep tech / AI startups in DACH-NL working on or near this field.
+    {prompt_fallback}
+    Make sure the description, tech/tool stack, pivot, and network fields reflect their actual field and are NOT generic computer science/AI engineering descriptions.
     
     Return a valid JSON array of exactly 5 elements matching this schema:
     [
       {{
         "name": "Exact Startup Name",
-        "description": "Concrete technical product details (2-3 sentences in English).",
+        "description": "{desc_spec}",
         "location": "City, Country",
         "status": "Hiring / Stable",
         "salary": "Entry: ~X EUR | Senior: ~Y EUR",
-        "tech_stack": ["Tech1", "Tech2", "Tech3"],
+        "tech_stack": {tech_stack_desc},
         "pivot": "Strategic shift, recent funding, or business development focus.",
         "network": "Competitors, partners, or corporate ecosystem context.",
         "sources": ["https://www.company.com", "https://kununu.com/company-url"]
