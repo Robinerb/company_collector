@@ -67,7 +67,7 @@ def run_analysis(profile_path='my_profil.txt'):
     if len(delta_companies) > 0:
         print(f"🔄 Calculating matches for {len(delta_companies)} NEW companies...")
         
-        model = "gemini-2.5-flash-lite"
+        model = "gemini-flash-latest"
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
         headers = {"Content-Type": "application/json"}
         

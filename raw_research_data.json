@@ -283,5 +283,217 @@
     "sources": [
       "https://medium.com/deepcode-ai/top-30-ai-start-ups-from-the-dach-region-forbes-a9a45ee5c79e"
     ]
+  },
+  {
+    "name": "deepset",
+    "description": "deepset builds enterprise-grade NLP and LLM applications, famously known as the creators of Haystack, an open-source framework for building search and RAG pipelines. They enable enterprises to leverage semantic search, QA systems, and generative AI on custom data.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~65,000 EUR | Senior: ~100,000 EUR",
+    "tech_stack": [
+      "Python",
+      "PyTorch",
+      "Haystack",
+      "Transformers",
+      "Docker",
+      "Kubernetes",
+      "Elasticsearch"
+    ],
+    "pivot": "Transitioned from custom NLP consulting to a SaaS-first model with deepset Cloud, capitalizing on the enterprise demand for secure RAG pipelines.",
+    "network": "Competes with Cohere and OpenAI in enterprise search; partners with AWS and major European cloud providers.",
+    "sources": [
+      "https://www.deepset.ai",
+      "https://www.kununu.com/de/deepset"
+    ]
+  },
+  {
+    "name": "Langfuse",
+    "description": "Langfuse is an open-source LLM engineering platform that provides tracing, evaluation, and analytics for generative AI applications. It helps developers monitor LLM application performance, debug complex RAG pipelines, and manage prompt versions.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~95,000 EUR",
+    "tech_stack": [
+      "TypeScript",
+      "Python",
+      "PostgreSQL",
+      "Docker",
+      "Next.js",
+      "ClickHouse"
+    ],
+    "pivot": "Raised a seed round recently to expand their open-source SDKs and cloud-hosted enterprise monitoring platform.",
+    "network": "Competes with LangSmith and Arize AI; backed by Y Combinator and prominent European VCs.",
+    "sources": [
+      "https://langfuse.com",
+      "https://github.com/langfuse/langfuse"
+    ]
+  },
+  {
+    "name": "Langdock",
+    "description": "Langdock provides a GDPR-compliant enterprise generative AI platform that allows employees to securely use LLMs, build custom assistants, and connect internal data sources via RAG. It focuses heavily on data privacy and European compliance standards.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~62,000 EUR | Senior: ~95,000 EUR",
+    "tech_stack": [
+      "Python",
+      "TypeScript",
+      "React",
+      "Docker",
+      "PostgreSQL",
+      "FastAPI",
+      "LangChain"
+    ],
+    "pivot": "Shifted focus towards strict EU compliance and on-premise/private cloud deployments for highly regulated industries like finance and legal.",
+    "network": "Competes with Dust.tt and Microsoft Copilot; partners with European hosting providers to guarantee sovereign data storage.",
+    "sources": [
+      "https://www.langdock.com",
+      "https://www.linkedin.com/company/langdock"
+    ]
+  },
+  {
+    "name": "Squirro",
+    "description": "Squirro is a Swiss deep tech company specializing in generative AI-enabled search, insights, and recommendation engines. Their platform uses advanced NLP and RAG to synthesize unstructured data for financial institutions and public sector clients.",
+    "location": "Zurich, Switzerland",
+    "status": "Stable",
+    "salary": "Entry: ~80,000 EUR | Senior: ~120,000 EUR",
+    "tech_stack": [
+      "Python",
+      "PyTorch",
+      "Elasticsearch",
+      "Docker",
+      "Kubernetes",
+      "FastAPI"
+    ],
+    "pivot": "Integrated generative AI and LLM orchestration directly into their core cognitive search product to offer secure enterprise RAG.",
+    "network": "Competes with Sinequa and Coveo; partners with major Swiss banks and global consulting firms.",
+    "sources": [
+      "https://squirro.com",
+      "https://www.kununu.com/ch/squirro"
+    ]
+  },
+  {
+    "name": "Kern AI",
+    "description": "Kern AI builds developer tools and infrastructure for data-centric NLP and LLM application development. Their platform, refinery, helps developers programmatically label, clean, and enrich text data to train and fine-tune highly accurate domain-specific models.",
+    "location": "Bonn, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~90,000 EUR",
+    "tech_stack": [
+      "Python",
+      "TypeScript",
+      "Docker",
+      "PostgreSQL",
+      "Transformers",
+      "FastAPI"
+    ],
+    "pivot": "Expanded from programmatic labeling for traditional NLP into a comprehensive platform for LLM fine-tuning and evaluation.",
+    "network": "Competes with Snorkel AI and Scale AI; backed by European seed investors and active in the open-source community.",
+    "sources": [
+      "https://www.kern.ai",
+      "https://github.com/code-kern-ai"
+    ]
+  },
+  {
+    "name": "Briink",
+    "description": "Briink builds AI-powered domain-specific LLM tools to automate ESG data extraction and compliance audits for corporate finance, private equity, and advisory firms. Their platform streamlines the due diligence process by analyzing unstructured financial and sustainability reports.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~60,000 EUR | Senior: ~90,000 EUR",
+    "tech_stack": [
+      "Python",
+      "PyTorch",
+      "FastAPI",
+      "React",
+      "HuggingFace",
+      "Docker"
+    ],
+    "pivot": "Recently secured seed funding to expand their LLM-based ESG audit tools for SFDR and EU Taxonomy compliance.",
+    "network": "Partners with major European venture capital and private equity funds to automate portfolio ESG reporting.",
+    "sources": [
+      "https://www.briink.com",
+      "https://www.kununu.com/de/briink-technologies"
+    ]
+  },
+  {
+    "name": "Yokoy",
+    "description": "Yokoy leverages artificial intelligence to automate spend management, expense processing, and corporate credit card administration for mid-to-large enterprises. The platform integrates directly with ERP systems to analyze transaction patterns, detect anomalies, and optimize corporate cash flows.",
+    "location": "Zurich, Switzerland",
+    "status": "Stable",
+    "salary": "Entry: ~75,000 EUR | Senior: ~115,000 EUR",
+    "tech_stack": [
+      "Python",
+      "TensorFlow",
+      "React",
+      "PostgreSQL",
+      "AWS",
+      "Kubernetes"
+    ],
+    "pivot": "Expanding their automated invoice processing suite to include predictive cash flow forecasting for corporate treasury departments.",
+    "network": "Competes with Spendesk and Soldo; partners with major ERP providers like SAP and Microsoft Dynamics.",
+    "sources": [
+      "https://www.yokoy.ai",
+      "https://www.kununu.com/ch/yokoy"
+    ]
+  },
+  {
+    "name": "Billie",
+    "description": "Billie is a leading provider of B2B Buy Now, Pay Later (BNPL) payment solutions, utilizing proprietary machine learning algorithms for real-time credit risk assessment and fraud detection. The platform helps corporate sellers optimize working capital and mitigate default risks during transactions.",
+    "location": "Berlin, Germany",
+    "status": "Stable",
+    "salary": "Entry: ~65,000 EUR | Senior: ~95,000 EUR",
+    "tech_stack": [
+      "Scala",
+      "Python",
+      "Kotlin",
+      "AWS",
+      "PostgreSQL",
+      "Spark"
+    ],
+    "pivot": "Deepening integration with major B2B e-commerce platforms and expanding risk-scoring models to support larger transaction volumes.",
+    "network": "Partnered with Klarna for B2B payments; competes with Mondu and Hokodo.",
+    "sources": [
+      "https://www.billie.io",
+      "https://www.kununu.com/de/billie"
+    ]
+  },
+  {
+    "name": "Quantco",
+    "description": "Quantco develops and implements proprietary machine learning algorithms, data science pipelines, and quantitative models to solve complex financial risk, pricing, and operational challenges. Their solutions are used by major financial institutions and corporate treasuries to automate high-stakes decision-making.",
+    "location": "Munich, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~85,000 EUR | Senior: ~130,000 EUR",
+    "tech_stack": [
+      "Python",
+      "Go",
+      "Rust",
+      "PyTorch",
+      "Docker",
+      "AWS"
+    ],
+    "pivot": "Scaling their algorithmic pricing and financial risk models into the European insurance and corporate lending sectors.",
+    "network": "Founded by Harvard and MIT alumni; collaborates with leading global banks and reinsurance giants.",
+    "sources": [
+      "https://www.quantco.com",
+      "https://www.glassdoor.com/Overview/Working-at-Quantco-EI_IE1454556.11,18.htm"
+    ]
+  },
+  {
+    "name": "Taktile",
+    "description": "Taktile provides a low-code platform that allows financial institutions and fintechs to build, run, and evaluate automated decision-making flows for credit underwriting and risk assessment. The platform integrates machine learning models to optimize transaction-level financial decisions.",
+    "location": "Berlin, Germany",
+    "status": "Hiring",
+    "salary": "Entry: ~70,000 EUR | Senior: ~105,000 EUR",
+    "tech_stack": [
+      "Python",
+      "TypeScript",
+      "React",
+      "Go",
+      "AWS",
+      "Kubernetes"
+    ],
+    "pivot": "Recently closed a Series A funding round to accelerate the deployment of their automated risk-engine platform in the US and European markets.",
+    "network": "Backed by Index Ventures and Tiger Global; partners with modern fintech infrastructure providers.",
+    "sources": [
+      "https://www.taktile.com",
+      "https://www.glassdoor.com/Overview/Working-at-Taktile-EI_IE4245612.11,18.htm"
+    ]
   }
 ]

@@ -238,6 +238,72 @@ st.markdown("""
         box-shadow: 0 10px 40px rgba(0,0,0,0.5) !important;
         min-width: 420px !important;
     }
+    
+    /* Netflix Profile Selection Portal CSS */
+    .profile-portal-title {
+        text-align: center;
+        color: #ffffff;
+        font-family: 'Outfit', sans-serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        margin-top: 60px;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: #ffffff;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        border: 3px solid transparent;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        margin-bottom: 12px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .profile-avatar:hover {
+        transform: scale(1.08);
+        border-color: #ffffff;
+        box-shadow: 0 12px 30px rgba(255,255,255,0.25);
+    }
+    
+    .profile-name {
+        color: #b2bec3;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 4px;
+        transition: color 0.2s ease;
+    }
+    
+    .profile-title {
+        color: #636e72;
+        font-size: 0.82rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 2px;
+        line-height: 1.2;
+    }
+    
+    .add-avatar {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 3px dashed rgba(255, 255, 255, 0.15) !important;
+        color: #636e72 !important;
+    }
+    
+    .add-avatar:hover {
+        border-color: #00c6ff !important;
+        color: #00c6ff !important;
+        background: rgba(0, 180, 219, 0.08) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -297,107 +363,232 @@ def parse_salary(salary_str):
         pass
     return entry, senior
 
-# --- Dynamic CV/Profile Scanning (Accepts TXT and PDF Resumes) ---
-with st.sidebar:
-    st.header("👤 Candidate Profiles")
-    
-    # Scan for profiles in profiles/ folder
-    profile_paths = glob.glob("profiles/*.txt")
-    available_profiles = {}
-    
-    for path in profile_paths:
-        fname = os.path.basename(path)
-        pid = os.path.splitext(fname)[0]
-        if pid == "my_profil" or pid == "robin_erb":
-            available_profiles["Robin Erb (Primary)"] = path
-        else:
-            display_name = fname.replace("_", " ").replace(".txt", "").title()
-            available_profiles[display_name] = path
-            
-    if not available_profiles:
-        st.warning("No profiles found. Please upload a CV below to start!")
-        active_name = None
-        active_path = None
-    else:
-        active_name = st.selectbox("Select Active Candidate:", list(available_profiles.keys()))
-        active_path = available_profiles[active_name]
-        
-        # Deletable profiles (except Robin Erb)
-        profile_id_tmp = os.path.splitext(os.path.basename(active_path))[0]
-        if profile_id_tmp != "my_profil" and profile_id_tmp != "robin_erb":
-            st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
-            if st.button("🗑️ Delete This Candidate", use_container_width=True):
-                try:
-                    if os.path.exists(active_path):
-                        os.remove(active_path)
-                    cache_file = f"profiles/dashboard_data_{profile_id_tmp}.json"
-                    if os.path.exists(cache_file):
-                        os.remove(cache_file)
-                    report_file = f"profiles/marktanalyse_db_{profile_id_tmp}.md"
-                    if os.path.exists(report_file):
-                        os.remove(report_file)
-                    st.success(f"Candidate profile '{active_name}' deleted!")
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Error deleting profile: {e}")
-        
-    st.markdown("---")
-    st.header("📤 Upload Candidate Resume")
-    uploaded_file = st.file_uploader("Upload CV (.txt, .pdf)", type=["txt", "pdf"])
-    
-    if uploaded_file is not None:
-        filename = uploaded_file.name
-        safe_filename = "".join([c if c.isalnum() or c in ['.', '_', '-'] else '_' for c in filename])
-        
-        # Consistent text extension for analysis engine processing
-        txt_filename = os.path.splitext(safe_filename)[0] + ".txt"
-        save_path = os.path.join("profiles", txt_filename)
-        
-        cv_content = None
-        # Handle PDF uploads directly via pypdf
-        if filename.lower().endswith(".pdf"):
-            try:
-                import pypdf
-                reader = pypdf.PdfReader(uploaded_file)
-                text = ""
-                for page in reader.pages:
-                    t = page.extract_text()
-                    if t:
-                        text += t + "\n"
-                cv_content = text.encode("utf-8")
-            except Exception as e:
-                st.sidebar.error(f"Error parsing PDF file: {e}")
-        else:
-            cv_content = uploaded_file.getbuffer()
-            
-        if cv_content:
-            with open(save_path, "wb") as f:
-                f.write(cv_content)
-            st.success(f"Uploaded and parsed {filename}!")
-            
-            # Trigger analysis matching engine automatically for new uploads
-            profile_id = os.path.splitext(txt_filename)[0]
-            cache_path = f'profiles/dashboard_data_{profile_id}.json'
-            
-            if not os.path.exists(cache_path):
-                with st.spinner("Analyzing candidate & matching ecosystem (Gemini 2.5 Flash-Lite)..."):
-                    try:
-                        from analysis_engine import run_analysis
-                        run_analysis(save_path)
-                        st.success("Successfully generated match scores!")
-                    except Exception as e:
-                        st.error(f"Error calculating matches: {e}")
-            st.rerun()
+def get_profile_gradient(name):
+    gradients = [
+        "linear-gradient(135deg, #FF416C, #FF4B2B)",  # Red-Orange
+        "linear-gradient(135deg, #00B4DB, #0083B0)",  # Blue
+        "linear-gradient(135deg, #11998e, #38ef7d)",  # Green
+        "linear-gradient(135deg, #8e2de2, #4a00e0)",  # Violet
+        "linear-gradient(135deg, #f953c6, #b91d73)",  # Pink
+        "linear-gradient(135deg, #f857a6, #ff5858)"   # Warm Sunset
+    ]
+    idx = sum(ord(c) for c in name) % len(gradients)
+    return gradients[idx]
 
-# Ensure active profile path is loaded
-if not active_path:
-    st.info("👈 Please upload a candidate resume to unlock the IT-Market Deep Tech Finder.")
+# --- Dynamic CV/Profile Scanning & Self-Healing Migration ---
+# Ensure profiles directory exists
+os.makedirs('profiles', exist_ok=True)
+
+# Rename my_profil.txt to robin_erb.txt for consistency if it exists
+if os.path.exists("profiles/my_profil.txt"):
+    if not os.path.exists("profiles/robin_erb.txt"):
+        os.rename("profiles/my_profil.txt", "profiles/robin_erb.txt")
+    else:
+        try:
+            os.remove("profiles/my_profil.txt")
+        except:
+            pass
+
+if not os.path.exists('profiles/robin_erb.txt') and os.path.exists('my_profil.txt'):
+    shutil.copy('my_profil.txt', 'profiles/robin_erb.txt')
+
+# Self-healing metadata scan
+from profiles_helper import extract_profile_metadata, discover_5_targeted_companies
+profile_paths = glob.glob("profiles/*.txt")
+for p_path in profile_paths:
+    p_id = os.path.splitext(os.path.basename(p_path))[0]
+    meta_path = f"profiles/{p_id}_meta.json"
+    if not os.path.exists(meta_path):
+        if p_id == "robin_erb":
+            meta = {
+                "name": "Robin Erb",
+                "direction": "Machine Learning & Robotics Specialist"
+            }
+        else:
+            try:
+                with open(p_path, "r", encoding="utf-8") as f:
+                    cv_text = f.read()
+                meta = extract_profile_metadata(cv_text)
+            except Exception as e:
+                meta = {"name": p_id.replace("_", " ").title(), "direction": "Deep Tech Specialist"}
+        with open(meta_path, "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2, ensure_ascii=False)
+
+if "selected_profile" not in st.session_state:
+    st.session_state["selected_profile"] = None
+
+if "show_add_profile_form" not in st.session_state:
+    st.session_state["show_add_profile_form"] = False
+
+if st.session_state["selected_profile"] is None:
+    st.markdown("<h1 class='profile-portal-title'>Who's using Company Collector?</h1>", unsafe_allow_html=True)
+    
+    # Reload metadata for available profiles
+    profile_paths = glob.glob("profiles/*.txt")
+    profiles_meta = []
+    for path in profile_paths:
+        p_id = os.path.splitext(os.path.basename(path))[0]
+        meta_path = f"profiles/{p_id}_meta.json"
+        if os.path.exists(meta_path):
+            with open(meta_path, "r", encoding="utf-8") as f:
+                meta = json.load(f)
+            profiles_meta.append({
+                "id": p_id,
+                "name": meta.get("name", p_id),
+                "direction": meta.get("direction", "Deep Tech Specialist"),
+                "path": path
+            })
+            
+    # Center profiles using Streamlit columns
+    num_profiles = len(profiles_meta) + 1 # plus one for Add Profile
+    cols = st.columns(max(5, num_profiles))
+    
+    for idx, p in enumerate(profiles_meta):
+        with cols[idx % len(cols)]:
+            initials = "".join([part[0] for part in p["name"].split()[:2]]).upper()
+            gradient = get_profile_gradient(p["name"])
+            
+            st.markdown(f"""
+            <div style='display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; text-align: center;'>
+                <div class='profile-avatar' style='background: {gradient};'>
+                    {initials}
+                </div>
+                <div class='profile-name'>{p["name"]}</div>
+                <div class='profile-title'>{p["direction"]}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Explore Profile", key=f"btn_sel_{p['id']}", use_container_width=True):
+                st.session_state["selected_profile"] = p["id"]
+                st.session_state["show_add_profile_form"] = False
+                st.rerun()
+                
+            if p["id"] != "robin_erb":
+                if st.button("🗑️ Delete Profile", key=f"btn_del_{p['id']}", type="secondary", use_container_width=True):
+                    try:
+                        if os.path.exists(p["path"]):
+                            os.remove(p["path"])
+                        meta_file = f"profiles/{p['id']}_meta.json"
+                        if os.path.exists(meta_file):
+                            os.remove(meta_file)
+                        cache_file = f"profiles/dashboard_data_{p['id']}.json"
+                        if os.path.exists(cache_file):
+                            os.remove(cache_file)
+                        report_file = f"profiles/marktanalyse_db_{p['id']}.md"
+                        if os.path.exists(report_file):
+                            os.remove(report_file)
+                        st.success(f"Purged profile '{p['name']}'!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error purging profile: {e}")
+                        
+    # Add Profile Card
+    add_idx = len(profiles_meta)
+    with cols[add_idx % len(cols)]:
+        st.markdown("""
+        <div style='display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; text-align: center;'>
+            <div class='profile-avatar add-avatar'>
+                ➕
+            </div>
+            <div class='profile-name' style='color:#636e72;'>Add Profile</div>
+            <div class='profile-title' style='color:#4a4a4a;'>Add a friend's CV</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if st.button("Add Profile", key="btn_add_profile", use_container_width=True):
+            st.session_state["show_add_profile_form"] = True
+            st.rerun()
+            
+    if st.session_state["show_add_profile_form"]:
+        st.markdown("<hr style='border-color: rgba(255,255,255,0.1);'>", unsafe_allow_html=True)
+        col_f1, col_f2, col_f3 = st.columns([1, 2, 1])
+        with col_f2:
+            st.markdown("<h3 style='color:white; text-align:center;'>➕ Create New Candidate Profile</h3>", unsafe_allow_html=True)
+            st.caption("Upload a TXT or PDF resume to extract credentials, scout matching startups, and calculate compatibility ratings.")
+            
+            with st.form("create_profile_form", clear_on_submit=True):
+                new_name = st.text_input("Candidate Full Name:", placeholder="e.g. Jean-Michel Molard")
+                uploaded_file = st.file_uploader("Upload CV Resume (.txt, .pdf):", type=["txt", "pdf"])
+                
+                col_btn1, col_btn2 = st.columns(2)
+                submit_btn = col_btn1.form_submit_button("Scout Startups & Create Profile", use_container_width=True)
+                cancel_btn = col_btn2.form_submit_button("Cancel", use_container_width=True)
+                
+                if submit_btn:
+                    if not new_name.strip():
+                        st.error("Please enter a name for the candidate.")
+                    elif uploaded_file is None:
+                        st.error("Please upload a resume file (.pdf or .txt).")
+                    else:
+                        cv_text = ""
+                        filename = uploaded_file.name
+                        if filename.lower().endswith(".pdf"):
+                            try:
+                                import pypdf
+                                reader = pypdf.PdfReader(uploaded_file)
+                                for page in reader.pages:
+                                    t = page.extract_text()
+                                    if t:
+                                        cv_text += t + "\n"
+                            except Exception as e:
+                                st.error(f"Error parsing PDF file: {e}")
+                        else:
+                            try:
+                                cv_text = uploaded_file.read().decode("utf-8")
+                            except Exception as e:
+                                st.error(f"Error reading text file: {e}")
+                                
+                        if cv_text.strip():
+                            new_pid = "".join([c.lower() if c.isalnum() else "_" for c in new_name]).strip("_")
+                            if not new_pid:
+                                new_pid = "candidate"
+                                
+                            orig_pid = new_pid
+                            counter = 1
+                            while os.path.exists(f"profiles/{new_pid}.txt"):
+                                new_pid = f"{orig_pid}_{counter}"
+                                counter += 1
+                                
+                            save_path = f"profiles/{new_pid}.txt"
+                            with open(save_path, "w", encoding="utf-8") as f:
+                                f.write(cv_text)
+                                
+                            with st.spinner("🧠 Extracting candidate career pedigree..."):
+                                meta = extract_profile_metadata(cv_text)
+                                meta["name"] = new_name
+                                
+                            with open(f"profiles/{new_pid}_meta.json", "w", encoding="utf-8") as f:
+                                json.dump(meta, f, indent=2, ensure_ascii=False)
+                                
+                            with st.spinner(f"🚀 Scouting 5 startups tailored for {meta['direction']}..."):
+                                discover_5_targeted_companies(cv_text, meta["direction"])
+                                
+                            with st.spinner("📊 Mapping compatibility score index (Gemini Flash)..."):
+                                from analysis_engine import run_analysis
+                                run_analysis(save_path)
+                                
+                            st.success(f"Profile for '{new_name}' created successfully with 5 initial companies discovered!")
+                            st.session_state["selected_profile"] = new_pid
+                            st.session_state["show_add_profile_form"] = False
+                            st.rerun()
+                            
+                if cancel_btn:
+                    st.session_state["show_add_profile_form"] = False
+                    st.rerun()
     st.stop()
 
+# --- Active Candidate Dashboard Load ---
+selected_profile = st.session_state["selected_profile"]
+active_path = f"profiles/{selected_profile}.txt"
+
+meta_path = f"profiles/{selected_profile}_meta.json"
+with open(meta_path, "r", encoding="utf-8") as f:
+    meta = json.load(f)
+active_name = meta.get("name", selected_profile.replace("_", " ").title())
+active_direction = meta.get("direction", "Deep Tech Specialist")
+
 # Derive active profile details
-profile_id = os.path.splitext(os.path.basename(active_path))[0]
-if profile_id == 'my_profil':
-    profile_id = 'robin_erb'
+profile_id = selected_profile
 
 # Load active cached analyses
 cache_data_path = f'profiles/dashboard_data_{profile_id}.json'
@@ -413,6 +604,29 @@ with open(cache_data_path, 'r', encoding='utf-8') as f:
 with open(active_path, 'r', encoding='utf-8') as f:
     active_profile_text = f.read()
 
+# Sidebar profile display & switch candidate option
+with st.sidebar:
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+    initials = "".join([part[0] for part in active_name.split()[:2]]).upper()
+    gradient = get_profile_gradient(active_name)
+    
+    st.markdown(f"""
+    <div style='background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center;'>
+        <div style='width: 50px; height: 50px; border-radius: 8px; background: {gradient}; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.3rem; margin-right: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);'>
+            {initials}
+        </div>
+        <div>
+            <div style='font-weight: 600; color: white; font-size: 1.05rem; line-height: 1.2;'>{active_name}</div>
+            <div style='font-size: 0.8rem; color: #b2bec3; margin-top: 3px;'>{active_direction}</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("🔄 Switch Candidate Profile", use_container_width=True, type="primary"):
+        st.session_state["selected_profile"] = None
+        st.session_state["show_add_profile_form"] = False
+        st.rerun()
+
 # --- Flatten and extract filter metadata ---
 flat_companies = []
 for cluster, comp_list in data.items():
@@ -424,10 +638,10 @@ all_techs = sorted(list(set([tech for c in flat_companies for tech in c.get("tec
 all_countries = sorted(list(set([c.get("location", "").split(",")[-1].strip() for c in flat_companies if "," in c.get("location")])))
 
 # --- Header Section with FLOATING AI Career Advisor Dialog ---
-col_head_title, col_head_search, col_head_chat = st.columns([3, 3, 2])
+col_head_title, col_head_search, col_head_chat = st.columns([4, 3, 2])
 with col_head_title:
     st.markdown("<h1 style='margin:0; padding:0; font-size:2.2rem; color:white;'>💼 Company Collector</h1>", unsafe_allow_html=True)
-    st.markdown(f"Evaluating European Tech for: **{active_name}**")
+    st.markdown(f"Evaluating European Tech for: **{active_name}** (<span style='color:#00c6ff;'>{active_direction}</span>)", unsafe_allow_html=True)
 with col_head_search:
     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
     search_query = st.text_input("🔍 Search Stack / Keyword:", "", placeholder="Search Tech, City, or keyword (e.g. PyTorch, C++)...", label_visibility="collapsed")
